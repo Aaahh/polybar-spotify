@@ -51,7 +51,9 @@ def fix_string(string):
 
 # Default parameters
 output = fix_string(u'{play_pause} {artist}: {song}')
-trunclen = 25
+podcast_output = fix_string(u'{song}') # Podcasts don't have Artist field
+
+trunclen = 30
 play_pause = fix_string(u'\u25B6,\u23F8') # first character is play, second is paused
 
 label_with_font = '%{{T{font}}}{label}%{{T-}}'
@@ -113,7 +115,10 @@ try:
             artist = label_with_font.format(font=font, label=artist)
             song = label_with_font.format(font=font, label=song)
 
-        print(output.format(artist=artist, song=song, play_pause=play_pause))
+        if artist:
+            print(output.format(artist=artist, song=song, play_pause=play_pause))
+        else:
+            print(podcast_output.format(song=song))
 
 except Exception as e:
     if isinstance(e, dbus.exceptions.DBusException):
