@@ -60,7 +60,7 @@ label_with_font = '%{{T{font}}}{label}%{{T-}}'
 font = args.font
 play_pause_font = args.play_pause_font
 
-# parameters can be overwritten by args
+# Parameters can be overwritten by args
 if args.trunclen is not None:
     trunclen = args.trunclen
 if args.custom_format is not None:
@@ -84,7 +84,6 @@ try:
     status = spotify_properties.Get('org.mpris.MediaPlayer2.Player', 'PlaybackStatus')
 
     # Handle play/pause label
-
     play_pause = play_pause.split(',')
 
     if status == 'Playing':
@@ -98,7 +97,6 @@ try:
         play_pause = label_with_font.format(font=play_pause_font, label=play_pause)
 
     # Handle main label
-
     artist = fix_string(metadata['xesam:artist'][0]) if metadata['xesam:artist'] else ''
     song = fix_string(metadata['xesam:title']) if metadata['xesam:title'] else ''
 
