@@ -46,7 +46,7 @@ parser.add_argument(
 args = parser.parse_args()
 
 # Default parameters
-output = u'{play_pause} {artist}: {song}'
+output = u'{play_pause} {artist}: {song} '
 trunclen = 25
 play_pause = u'\u25B6\u23F8'  # first character is play, second is paused
 
@@ -121,4 +121,4 @@ try:
         print(output.format(artist=artist, song=song, play_pause=play_pause))
 
 except dbus.exceptions.DBusException as e:
-    print('DBUS exception:', e)
+    print()
