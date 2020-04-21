@@ -45,16 +45,18 @@ parser.add_argument(
 args = parser.parse_args()
 
 # Default parameters
-output = u'{play_pause} {artist}: {song} '
-trunclen = 25
-play_pause = u'\u25B6\u23F8'  # first character is play, second is paused
+output = fix_string(u'{play_pause} {artist}: {song}')
+podcast_output = fix_string(u'{song}') # Podcasts don't have Artist field
+
+trunclen = 30
+play_pause = fix_string(u'\u25B6,\u23F8') # first character is play, second is paused
 
 label_with_font = '%{{T{font}}}{label}%{{T-}}'
 font = args.font
 play_pause_font = args.play_pause_font
 toggle_play = False
 
-# parameters can be overwritten by args
+# Parameters can be overwritten by args
 if args.trunclen is not None:
     trunclen = args.trunclen
 if args.custom_format is not None:
@@ -101,7 +103,6 @@ try:
         play_pause = label_with_font.format(font=play_pause_font, label=play_pause)
 
     # Handle main label
-
     artist = fix_string(metadata['xesam:artist'][0]) if metadata['xesam:artist'] else ''
     song = fix_string(metadata['xesam:title']) if metadata['xesam:title'] else ''
     album = fix_string(metadata['xesam:album']) if metadata['xesam:album'] else ''
@@ -120,7 +121,10 @@ try:
             song = label_with_font.format(font=font, label=song)
             album = label_with_font.format(font=font, label=album)
 
-        print(output.format(artist=artist, song=song, play_pause=play_pause, album=album))
+        if artist:
+            print(output.format(artist=artist, song=song, play_pause=play_pause, album=album))
+        else:
+            print(podcast_output.format(song=song))
 
 except dbus.exceptions.DBusException as e:
     print()
